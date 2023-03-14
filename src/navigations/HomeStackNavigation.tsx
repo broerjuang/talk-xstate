@@ -9,7 +9,7 @@ import { TransferScreen } from "../screens/TransferScreen";
 export type HomeStackParams = {
   "home screen": undefined;
   "transfer screen": undefined;
-  Amount: undefined;
+  "contact screen": undefined;
 };
 
 /**
@@ -24,14 +24,17 @@ function BackButton() {
         send({ type: "BACK" });
       }}
     >
-      <Ionicons name="caret-back" />
+      <Ionicons
+        name="chevron-back-outline"
+        size={24}
+        style={{ marginLeft: -10 }}
+      />
     </TouchableOpacity>
   );
 }
 const HomeStack = createNativeStackNavigator<HomeStackParams>();
 
 export function HomeStackNavigation() {
-  let { send } = useTransaction();
   return (
     <HomeStack.Navigator
       screenOptions={{
@@ -46,10 +49,10 @@ export function HomeStackNavigation() {
       <HomeStack.Screen
         name="transfer screen"
         component={TransferScreen}
-        options={{ title: "Select Contact" }}
+        options={{ title: "Transfer" }}
       />
       <HomeStack.Screen
-        name="Amount"
+        name="contact screen"
         component={ContactScreen}
         options={{ title: "Contact" }}
       />

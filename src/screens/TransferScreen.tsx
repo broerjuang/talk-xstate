@@ -1,4 +1,10 @@
-import { Text } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
+import { useTransaction } from "../modules/transactions";
 export function TransferScreen() {
-  return <Text>Transfer Screen</Text>;
+  let { send } = useTransaction();
+  return (
+    <TouchableOpacity onPress={() => send({ type: "GO TO CONTACT SCREEN" })}>
+      <Text>Go to contact screen</Text>
+    </TouchableOpacity>
+  );
 }

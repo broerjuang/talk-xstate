@@ -2,13 +2,22 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMachine } from "@xstate/react";
 import { createContext, useContext } from "react";
-import { Text } from "react-native";
+import { InterpreterFrom, StateFrom } from "xstate";
 import { HomeStackParams } from "../../navigations/HomeStackNavigation";
-import { Context, Events, transactionMachine } from "./transaction.machine";
+import { transactionMachine } from "./transaction.machine";
+
+/**
+ * This function helper is taken from
+ * https://github.com/statelyai/xstate/blob/main/packages/xstate-react/src/useMachine.ts#L62
+ */
+export type Prop<T, K> = K extends keyof T ? T[K] : never;
+type TMachine = typeof transactionMachine;
+type TInterpreter = InterpreterFrom<TMachine>;
+type Send = Prop<TInterpreter, "send">;
 
 type TransactionProviderValue = {
-  context: Context;
-  send: (event: Events) => void;
+  state: StateFrom<TMachine>;
+  send: Send;
 };
 
 let TransactionProviderContext = createContext<
@@ -25,15 +34,14 @@ type Props = {
 
 export function TransactionProvider({ children }: Props) {
   let navigation = useNavigation<Navigation>();
-  let [{ context, value }, send] = useMachine(transactionMachine, {
+  let [state, send] = useMachine(transactionMachine, {
     context: {
       navigation,
     },
   });
 
   return (
-    <TransactionProviderContext.Provider value={{ context, send }}>
-      <Text style={{ marginTop: 50 }}>{JSON.stringify(value)}</Text>
+    <TransactionProviderContext.Provider value={{ state, send }}>
       {children}
     </TransactionProviderContext.Provider>
   );

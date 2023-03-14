@@ -20,23 +20,22 @@ export function HomeScreen() {
         <View style={styles.card}>
           <Text>Amount</Text>
         </View>
-        <View style={styles.card}>
-          <View>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => {
-                send({ type: "CLICK TRANSFER" });
-              }}
-              style={styles.card}
-            >
-              <MaterialCommunityIcons
-                name="bank-transfer-out"
-                size={32}
-                color="black"
-              />
-              <Text>Transfer</Text>
-            </TouchableOpacity>
-          </View>
+
+        <View>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              send({ type: "CLICK TRANSFER" });
+            }}
+            style={styles.card}
+          >
+            <MaterialCommunityIcons
+              name="bank-transfer-out"
+              size={32}
+              color="black"
+            />
+            <Text>Transfer</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>

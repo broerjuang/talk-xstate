@@ -9,11 +9,6 @@ const Tab = createBottomTabNavigator();
 export function RootNavigation() {
   return (
     <Tab.Navigator
-      screenListeners={({ navigation }) => ({
-        beforeRemove(event) {
-          console.log("log");
-        },
-      })}
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
