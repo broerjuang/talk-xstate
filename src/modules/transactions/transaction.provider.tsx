@@ -1,12 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMachine } from "@xstate/react";
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext } from "react";
 import { Text } from "react-native";
 import { HomeStackParams } from "../../navigations/HomeStackNavigation";
-import { transactionMachine } from "./transaction.machine";
+import { Context, Events, transactionMachine } from "./transaction.machine";
 
-type TransactionProviderValue = {};
+type TransactionProviderValue = {
+  context: Context;
+  send: (event: Events) => void;
+};
 
 let TransactionProviderContext = createContext<
   TransactionProviderValue | undefined
@@ -20,57 +23,18 @@ type Props = {
   children: React.ReactNode;
 };
 
-export function TransactionProvider(props: Props) {
+export function TransactionProvider({ children }: Props) {
   let navigation = useNavigation<Navigation>();
-  let [state, send] = useMachine(transactionMachine, {
-    actions: {
-      "go to transfer screen": () => {
-        navigation.navigate("transfer screen");
-      },
+  let [{ context, value }, send] = useMachine(transactionMachine, {
+    context: {
+      navigation,
     },
   });
 
-  useEffect(() => {
-    console.log("test");
-    navigation.addListener("blur", (event) => {
-      console.log("blur", event);
-    });
-
-    navigation.addListener("focus", (event) => {
-      console.log("focus", event);
-    });
-
-    navigation.addListener("beforeRemove", (event) => {
-      console.log("beforeRemove", event);
-    });
-
-    // return listener;
-  }, []);
-
-  //   useEffect(() => {
-  //     let backButton = () => {
-  //       send({ type: "BACK" });
-  //       return true;
-  //     };
-  //     let subscibe = BackHandler.addEventListener(
-  //       "hardwareBackPress",
-  //       backButton
-  //     );
-  //     return () => subscibe.remove();
-  //   });
-
-  // useEffect(() => {
-  //   navigation.addListener("beforeRemove", (event) => {
-  //     event.preventDefault();
-  //     console.log("test");
-  //     send({ type: "BACK" });
-  //   });
-  // }, []);
-
   return (
-    <TransactionProviderContext.Provider value={{ state, send }}>
-      <Text style={{ marginTop: 50 }}>{JSON.stringify(state.value)}</Text>
-      {props.children}
+    <TransactionProviderContext.Provider value={{ context, send }}>
+      <Text style={{ marginTop: 50 }}>{JSON.stringify(value)}</Text>
+      {children}
     </TransactionProviderContext.Provider>
   );
 }

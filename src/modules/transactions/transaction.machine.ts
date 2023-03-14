@@ -1,23 +1,60 @@
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { createMachine } from "xstate";
+import { HomeStackParams } from "../../navigations/HomeStackNavigation";
 
-export let transactionMachine = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QBcBOBDAdrdBjZAlgPaYAEAtngBYGZgB0VR5YpsuqYYmAxAMIAZAJJ8A0qQAqAJQCCAOQDKAMQCiUgNoAGALqJQAByKwChEnpAAPRAEYALACZ6AZgAc9l9fsBWADQgAnogAtLbW9JouXgCcTgDsXgC+CX5oWDj4xGSUuDR09KnYAGZgqGwcXJj5GNh4pmSFRKjkPAoAqgBCALJCElq6SCCGxnXmVgi2E-T21i7xfoEI1tZR9F4AbGu2mmveSckgmEQQcOYF6XUU1LRg5kMmmaPBsS7OcwHBni9ekTHxSSnVc6ZS45a6MZisdicbi3Iz3MwDMZBJyaV6+d4IEJhCLROKJfZnWrA7K5BhnYqlKEVWHDB6IxBOLy2egeTbbbzzYJOFaaJlrWb4gFpIkkEGkqppCllaGVQkZUUNJo0+GYR7jTSOVlbHboha2WL0CZeJyeQUgOUXElg8klaUVej6VBEXBwYyYKCkG2oZUjenjawG9m6xD2TTMuxBvYJIA */
-  id: "transaction machine",
-  initial: "home screen",
-  states: {
-    "home screen": {
-      on: {
-        "CLICK TRANSFER": {
-          target: "transfer screen",
-          actions: ["go to transfer screen"],
+type Navigation = NativeStackNavigationProp<HomeStackParams, "home screen">;
+
+export type Context = {
+  navigation?: Navigation;
+};
+
+export type Events =
+  | {
+      type: "CLICK TRANSFER";
+    }
+  | {
+      type: "BACK";
+    };
+
+export let transactionMachine = createMachine(
+  {
+    /** @xstate-layout N4IgpgJg5mDOIC5QBcBOBDAdrdBjZAlgPaYAEAtngBYGZgB0VR5YpsuqYYmAxAMIAZAJJ8A0qQAqAJQCCAOQDKAMQCiUgNoAGALqJQAByKwChEnpAAPRACYAzADZ6ARgDsADhcBWe54Asvp2sATjdfABoQAE9EAFpreyD6X3igoNs0zWtvFwBfHIi0LBx8YjJKXBo6ekLsADMwVDYOLl4AIRkxLV0kEENjU0xzKwQYoMcPNyDfT08gl0CZtwjokdCk+18QhxDJtz88-JBMIgg4cxrigYpqWjBzPpNSodinTxd6MY8gp3trazdQstYrZvB8UqEgsFrL5JrY8gUMNg8FdypUGEwWE1ONx7kZHmYesMYk5NIlPi5vr9-qFNE4gSMsr56KT-LZbIFNJ4nKlcocLsjStcKrdqojYPVGuxsYMeg8Bs8EPEmXsYdZXPYSUFNEsorE-PR3L4Ka8HHsvgcckA */
+    id: "transaction machine",
+    predictableActionArguments: true,
+    initial: "home screen",
+    context: {},
+    schema: {
+      events: {} as Events,
+      context: {} as Context,
+    },
+    tsTypes: {} as import("./transaction.machine.typegen").Typegen0,
+    states: {
+      "home screen": {
+        on: {
+          "CLICK TRANSFER": {
+            target: "transfer screen",
+            actions: ["to transfer screen"],
+          },
+        },
+      },
+
+      "transfer screen": {
+        on: {
+          BACK: { target: "home screen", actions: ["go back"] },
         },
       },
     },
-
-    "transfer screen": {
-      on: {
-        BACK: "home screen",
+  },
+  {
+    actions: {
+      "to transfer screen": (ctx) => {
+        if (ctx.navigation) {
+          ctx.navigation.navigate("transfer screen");
+        }
+      },
+      "go back": (ctx) => {
+        ctx?.navigation?.goBack();
       },
     },
-  },
-});
+  }
+);
