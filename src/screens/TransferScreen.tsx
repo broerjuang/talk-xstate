@@ -1,9 +1,9 @@
 import BottomSheet from "@gorhom/bottom-sheet";
-import { Box, Button, Heading, Input, Text } from "native-base";
 import { useRef } from "react";
 import { StyleSheet, View } from "react-native";
-import ContactsList from "../../components/ContactList";
-import { useApp } from "../../flows/application.provider";
+import { useApp } from "../flows/application.provider";
+// import ContactsList from "../../components/ContactList";
+// import { useApp } from "../../flows/application.provider";
 
 export function TransferScreen() {
   let { state, send } = useApp();
@@ -11,7 +11,7 @@ export function TransferScreen() {
 
   return (
     <View style={styles.container}>
-      {state.matches({ "transfer screen": "alert" }) && (
+      {/* {state.matches({ "transfer screen": "alert" }) && (
         <Box>
           <Text>Do you want to cancel the transfer?</Text>
           <Button onPress={() => send({ type: "YES" })}>Yes</Button>
@@ -37,7 +37,7 @@ export function TransferScreen() {
           <Input mx="3" placeholder="Input" w="100%" />
           <Button>Submit</Button>
         </Box>
-      )}
+      )} */}
     </View>
   );
 }
