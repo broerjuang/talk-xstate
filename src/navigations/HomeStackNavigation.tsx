@@ -1,15 +1,22 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { TouchableOpacity } from "react-native";
-import { useTransaction } from "../modules/transactions";
-import { ContactScreen } from "../screens/ContactScreen";
-import { HomeScreen } from "../screens/HomeScreen";
-import { TransferScreen } from "../screens/TransferScreen";
+import { useEffect } from "react";
+import { BackHandler, TouchableOpacity } from "react-native";
+import { useApp } from "../flows/application.provider";
+
+import { AddMoneyScreen } from "../screens/v1/AddMoneyScreen";
+import { ErrorScreen } from "../screens/v1/ErrorScreen";
+import { HomeScreen } from "../screens/v1/HomeScreen";
+import { QRISScreen } from "../screens/v1/QRISScreen";
+import { TransferScreen } from "../screens/v1/TransferScreen";
 
 export type HomeStackParams = {
   "home screen": undefined;
   "transfer screen": undefined;
   "contact screen": undefined;
+  "error screen": undefined;
+  "qris screen": undefined;
+  "add money screen": undefined;
 };
 
 /**
@@ -17,7 +24,22 @@ export type HomeStackParams = {
  */
 
 function BackButton() {
-  let { send } = useTransaction();
+  let { send, state } = useApp();
+  let handleBackButtonClick = () => {
+    send({ type: "BACK" });
+    return true;
+  };
+  // TODO: there's still bug
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        "hardwareBackPress",
+        handleBackButtonClick
+      );
+    };
+  }, [state.context.navigation]);
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -52,9 +74,19 @@ export function HomeStackNavigation() {
         options={{ title: "Transfer" }}
       />
       <HomeStack.Screen
-        name="contact screen"
-        component={ContactScreen}
+        name="error screen"
+        component={ErrorScreen}
         options={{ title: "Contact" }}
+      />
+      <HomeStack.Screen
+        name="qris screen"
+        component={QRISScreen}
+        options={{ title: "QRIS" }}
+      />
+      <HomeStack.Screen
+        name="add money screen"
+        component={AddMoneyScreen}
+        options={{ title: "Add Money" }}
       />
     </HomeStack.Navigator>
   );

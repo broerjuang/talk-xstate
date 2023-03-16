@@ -1,23 +1,20 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { StyleSheet } from "react-native";
-import { TransactionProvider } from "./src/modules/transactions";
+import { NativeBaseProvider } from "native-base";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { AppProvider } from "./src/flows/application.provider";
+
 import { RootNavigation } from "./src/navigations/RootNavigation";
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <TransactionProvider>
-        <RootNavigation />
-      </TransactionProvider>
-    </NavigationContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NativeBaseProvider>
+        <NavigationContainer>
+          <AppProvider>
+            <RootNavigation />
+          </AppProvider>
+        </NavigationContainer>
+      </NativeBaseProvider>
+    </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
