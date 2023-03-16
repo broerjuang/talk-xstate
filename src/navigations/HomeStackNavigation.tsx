@@ -4,11 +4,11 @@ import { useEffect } from "react";
 import { BackHandler, TouchableOpacity } from "react-native";
 import { useApp } from "../flows/application.provider";
 
-import { AddMoneyScreen } from "../screens/v1/AddMoneyScreen";
-import { ErrorScreen } from "../screens/v1/ErrorScreen";
-import { HomeScreen } from "../screens/v1/HomeScreen";
-import { QRISScreen } from "../screens/v1/QRISScreen";
-import { TransferScreen } from "../screens/v1/TransferScreen";
+import { AddMoneyScreen } from "../screens/AddMoneyScreen";
+import { ErrorScreen } from "../screens/ErrorScreen";
+import { HomeScreen } from "../screens/HomeScreen";
+import { QRISScreen } from "../screens/QRISScreen";
+import { TransferScreen } from "../screens/TransferScreen";
 
 export type HomeStackParams = {
   "home screen": undefined;

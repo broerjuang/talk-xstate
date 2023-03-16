@@ -1,8 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { PRIMARY_COLOR } from "../constants/colors";
-import { ScenarioScreen } from "../screens/v1/ScenarioScreen";
-import { HomeStackNavigation2 } from "./HomeStack2Navigation";
+import { ScenarioScreen } from "../screens/ScenarioScreen";
 import { HomeStackNavigation } from "./HomeStackNavigation";
 
 const Tab = createBottomTabNavigator();
@@ -21,16 +20,6 @@ export function RootNavigation() {
           headerShown: false,
           tabBarIcon: ({ color }) => {
             return <Ionicons name="home-outline" size={24} color={color} />;
-          },
-        }}
-      />
-      <Tab.Screen
-        name="Home 2"
-        component={HomeStackNavigation2}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ color }) => {
-            return <Ionicons name="home" size={24} color={color} />;
           },
         }}
       />

@@ -1,9 +1,11 @@
 import { getSimplePaths } from "@xstate/graph";
 import { ScrollView, Text, View } from "native-base";
 import Tree from "react-native-json-tree";
+import { applicationFlow } from "../flows/application.flow";
+import { useApp } from "../flows/application.provider";
 
-import { applicationFlow } from "../../flows/application.flow";
-import { useApp } from "../../flows/application.provider";
+// import { applicationFlow } from "../../flows/application.flow";
+// import { useApp } from "../../flows/application.provider";
 
 // Taken from: https://codesandbox.io/s/xstate-checkout-app-example-cd168x?file=/src/index.js:858-962
 let scenarios = getSimplePaths(applicationFlow, {
@@ -11,32 +13,21 @@ let scenarios = getSimplePaths(applicationFlow, {
 });
 
 function findScenario(predicate) {
-  console.log({
-    scenario: Object.values(scenarios).map((scenario) =>
-      scenario.state.matches({ "transfer screen": "alert" })
-    ),
-  });
   return Object.values(scenarios).find(predicate);
 }
 
 let scenario = findScenario((scenario) => {
-  return scenario.state.matches({ "transfer screen": "contact list" });
+  return scenario.state.matches("idle");
 });
 
 export function ScenarioScreen() {
   let { state } = useApp();
-  console.log({ scenario });
-  // state.matches({ "transfer screen": "alert" });
+
   let arrivedAt =
     typeof scenario.state.value === "string"
       ? scenario.state.value
       : Object.values(scenario.state.value)[0] || ("" as string);
-  // console.log({
-  //   scenario:
-  //     typeof scenario.state.value === "string"
-  //       ? scenario.state.value
-  //       : Object.values(scenario.state.value)[0],
-  // });
+
   return (
     <ScrollView>
       <View>
@@ -71,7 +62,7 @@ export function ScenarioScreen() {
           );
         })}
         <View>
-          <Text>Then you will react {arrivedAt as string}</Text>
+          <Text>Then you will reach {arrivedAt as string}</Text>
         </View>
       </View>
     </ScrollView>

@@ -11,15 +11,9 @@ import {
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet } from "react-native";
 
 import { FontAwesome } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import { CardMenu } from "../../components/CardMenu";
-import { NavigationV2 } from "../../navigations/HomeStack2Navigation";
+import { CardMenu } from "../components/CardMenu";
 
 export function HomeScreen() {
-  let [amount, setAmount] = useState(0);
-  let [showBalance, setShowBalance] = useState(true);
-  let navigation = useNavigation<NavigationV2>();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -31,20 +25,16 @@ export function HomeScreen() {
             Your Balance
           </Heading>
           <HStack mt="2" alignItems={"center"}>
-            <Heading size="xl">
-              {showBalance ? "$ " + amount : "********"}
-            </Heading>
+            <Heading size="xl">$0</Heading>
             <Box alignItems="center">
               <IconButton
                 onPress={() => {
-                  setShowBalance((showBalance) => !showBalance);
+                  // send({ type: "TOGGLE_BALANCE" });
                 }}
                 ml="1"
                 icon={
-                  <FontAwesome
-                    name={showBalance ? "eye" : "eye-slash"}
-                    size={20}
-                  />
+                  // eye-slah for hiding
+                  <FontAwesome name="eye" size={20} />
                 }
               />
             </Box>
@@ -54,21 +44,13 @@ export function HomeScreen() {
         <ScrollView horizontal style={{ marginVertical: 10 }}>
           <CardMenu
             name="wallet-plus-outline"
-            onPress={() => {
-              navigation.navigate("add money screen v2");
-            }}
+            onPress={() => {}}
             title="Add Money"
           />
           <Spacer width="5" />
           <CardMenu name="bank-transfer" onPress={() => {}} title="Transfer" />
           <Spacer width="5" />
-          <CardMenu
-            name="qrcode-scan"
-            onPress={() => {
-              navigation.navigate("qris screen v2");
-            }}
-            title="QRIS"
-          />
+          <CardMenu name="qrcode-scan" onPress={() => {}} title="QRIS" />
           <Spacer width="5" />
           <CardMenu name="graphql" onPress={() => {}} title="conference" />
         </ScrollView>
@@ -81,7 +63,6 @@ let styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: StatusBar.currentHeight,
-    // backgroundColor: BACKGROUND_COLOR,
   },
   scrollView: {
     marginHorizontal: 20,
